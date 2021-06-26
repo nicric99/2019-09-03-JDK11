@@ -51,14 +51,39 @@ public class FoodController {
 
     @FXML
     void doCammino(ActionEvent event) {
-    	txtResult.clear();
-    	txtResult.appendText("Cerco cammino peso massimo...");
+    	txtResult.appendText("Cerco cammino peso massimo...\n");
+    	String pas= txtPassi.getText();
+    	Integer passi= null;
+    	try {
+    		passi= Integer.parseInt(pas);
+    	}catch(NumberFormatException nfe) {
+    		txtResult.appendText("Non hai inserito un valore nnumerico nei passi !");
+    		return;
+    	}
+    	if(passi<=0) {
+    		txtResult.appendText("Passi inseriti scorretti, inserire almeno un numero maggiore di zero");
+    	}
+    	String tipo= boxPorzioni.getValue();
+    	if(tipo== null) {
+    		txtResult.appendText("Non hai selezionato alcun tipo, selezionarlo dalla tendina\n ");
+    	}
+    	List<String> result= new ArrayList<>();
+    	result=model.startCammino(tipo, passi);
+    	for(String s: result) {
+    		txtResult.appendText(s+"\n");
+    	}
+    	txtResult.appendText("PESO DEL CAMMINO= "+model.getPesoCammino()+"\n");
+       	
+    	
     }
 
     @FXML
     void doCorrelate(ActionEvent event) {
     	txtResult.appendText("Cerco porzioni correlate...\n");
     	String tipo = boxPorzioni.getValue();
+    	if(tipo== null) {
+    		txtResult.appendText("Non hai inserito nessun tipo, selezionalo dalla tendina\n");
+    	}
     	List<ArcoPeso> result = new ArrayList<>();
     	result=model.getConnessi(tipo);
     	for(ArcoPeso a: result) {

@@ -144,7 +144,7 @@ public class FoodDao {
 	public List<Adiacenza> getArchi(Double calorie){
 		String sql = "SELECT p1.portion_display_name AS pr1,p2.portion_display_name AS pr2, COUNT(DISTINCT(p1.food_code)) AS peso "
 				+ "FROM `portion` AS p1,`portion` AS p2 "
-				+ "WHERE p1.calories<? AND p2.calories<? AND p1.food_code=p2.food_code AND p1.portion_display_name > p2.portion_display_name "
+				+ "WHERE p1.food_code=p2.food_code AND p1.portion_display_name > p2.portion_display_name "
 				+ "GROUP BY p1.portion_display_name,p2.portion_display_name " ;
 		try {
 			Connection conn = DBConnect.getConnection() ;
@@ -152,8 +152,8 @@ public class FoodDao {
 			PreparedStatement st = conn.prepareStatement(sql) ;
 			
 			List<Adiacenza> list = new ArrayList<>() ;
-			st.setDouble(1, calorie);
-			st.setDouble(2, calorie);
+			/*st.setDouble(1, calorie);
+			st.setDouble(2, calorie);*/
 			
 			ResultSet res = st.executeQuery() ;
 			
